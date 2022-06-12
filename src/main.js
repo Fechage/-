@@ -1,6 +1,14 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import registerElement from './global/index'
+import 'normalize.css'
+import '@/assets/css/index.less'
 
-createApp(App).use(store).use(router).mount("#app");
+const app = createApp(App)
+// 注册
+app.use(registerElement)
+app.use(store)
+app.use(router)
+app.mount('#app')
