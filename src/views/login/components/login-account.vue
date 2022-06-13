@@ -22,8 +22,11 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
+import { useStore } from 'vuex'
 import { rules } from '../config/account-config'
 import useCache from '@/utils/cache'
+
+const store = useStore()
 // 获取输入账号和密码
 const account = reactive({
   name: '',
@@ -35,19 +38,20 @@ const formRef = ref()
 // 执行登陆逻辑
 const loginAction = (isKeep) => {
   formRef.value.validate((valid) => {
-    // 如果账号和密码规则验证通过,则执行
+    // 如果账号和密码规则验证通过
     if (valid) {
       if (isKeep) {
-        // 缓存密码
+        // 则执行缓存密码
         useCache.setCache('user', account.name)
         useCache.setCache('password', account.password)
       } else {
-        // 清除密码
+        // 否则清除密码
         useCache.deleteCache('user', account.name)
         useCache.deleteCache('password', account.password)
       }
     }
     // 登陆验证
+    store.dispatch('login/accountLoginAction', { ...account })
   })
 }
 

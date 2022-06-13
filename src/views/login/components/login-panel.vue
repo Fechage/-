@@ -1,6 +1,7 @@
 <template>
   <div class="login-panel">
-    <h1 class="title">后台管理系统</h1>
+    <h1 class="title">自助交租系统</h1>
+    <h3 class="title">让每位租客实现交租自由</h3>
     <!-- 切换栏 -->
     <el-tabs type="border-card" stretch v-model="currentTab">
       <!-- 账号登陆 -->
@@ -30,7 +31,11 @@
       <el-link type="primary">忘记密码</el-link>
     </div>
     <!-- 登陆按钮 -->
-    <el-button class="el-btn" type="primary" @click="handelLoginClick"
+    <el-button
+      class="el-btn"
+      type="primary"
+      @click="handelLoginClick"
+      v-loading="isLodaing"
       >立即登陆</el-button
     >
   </div>
@@ -47,7 +52,7 @@ const isKeep = ref(true)
 // 记录当前所在的标签页
 const currentTab = ref('account')
 onUpdated(() => console.log(currentTab.value))
-
+const isLodaing = ref(false)
 // 拿到 login-account login-phone组件
 const accountRef = ref()
 const phoneRef = ref()
@@ -55,6 +60,7 @@ const phoneRef = ref()
 // 如果当前标签页在"账号登陆",则调用 login-account 中的 loginAction 执行登陆要执行的逻辑,
 // 并将"记住密码"传过去
 const handelLoginClick = () => {
+  isLodaing.value = true
   if (currentTab.value === 'account') {
     accountRef.value.loginAction(isKeep.value)
   }
