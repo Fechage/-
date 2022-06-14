@@ -48,7 +48,6 @@ const login = {
       const userMenuList = userMenuListResult.data
       commit('saveUserMenuList', userMenuList)
       useCache.setCache('userMenuList', userMenuList)
-      console.log(userMenuList)
 
       // 登陆成功,切换到首页
       router.push('/main')

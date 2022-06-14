@@ -26,11 +26,12 @@ import { useStore } from 'vuex'
 import { rules } from '../config/account-config'
 import useCache from '@/utils/cache'
 
+const emit = defineEmits(['change-loading'])
 const store = useStore()
 // 获取输入账号和密码
 const account = reactive({
-  name: '',
-  password: ''
+  name: useCache.getCache('user') ?? '',
+  password: useCache.getCache('password') ?? ''
 })
 // 拿到 el-form 组件
 const formRef = ref()
@@ -51,7 +52,15 @@ const loginAction = (isKeep) => {
       }
     }
     // 登陆验证
-    store.dispatch('login/accountLoginAction', { ...account })
+    store
+      .dispatch('login/accountLoginAction', { ...account })
+      .then(() => {
+        alert('登陆成功!')
+      })
+      .catch(() => {
+        emit('change-loading')
+        alert('用户名或密码错误,请重新输入~')
+      })
   })
 }
 

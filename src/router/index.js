@@ -1,3 +1,4 @@
+import useCache from '@/utils/cache'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
@@ -28,6 +29,15 @@ const routes = [
 const router = createRouter({
   routes,
   history: createWebHashHistory()
+})
+// 如果用户没有登陆获取token, 强制跳转登陆页面
+router.beforeEach((to) => {
+  if (to.path !== '/login') {
+    const token = useCache.getCache('token')
+    if (!token) {
+      return '/login'
+    }
+  }
 })
 
 export default router

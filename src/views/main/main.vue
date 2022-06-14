@@ -1,8 +1,40 @@
 <template>
-  <div class="main">Main</div>
-  <p>{{ $store.state.name }}</p>
+  <div class="main">
+    <el-container class="main-content">
+      <el-aside class="aside" width="200px">
+        <navMenu />
+      </el-aside>
+      <el-container class="page">
+        <el-header class="header">
+          <navHeader />
+        </el-header>
+        <el-main class="page-content">Main</el-main>
+      </el-container>
+    </el-container>
+  </div>
 </template>
 
-<script setup></script>
+<script setup>
+import navMenu from '@/components/nav-menu/index'
+import navHeader from '@/components/nav-header/index'
+</script>
 
-<style></style>
+<style lang="less" scoped>
+.main {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.main-content,
+.page {
+  height: 100%;
+}
+.page-content {
+  height: calc(100% - 48px);
+  border-left: 1px solid #eaecef;
+  border-top: 1px solid #eaecef;
+}
+</style>

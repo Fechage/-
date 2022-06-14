@@ -13,7 +13,7 @@
           </span>
         </template>
         <!-- 输入组件 -->
-        <login-account ref="accountRef" />
+        <login-account ref="accountRef" @change-loading="changeLoading" />
       </el-tab-pane>
       <!-- 手机登陆 -->
       <el-tab-pane name="phone">
@@ -22,7 +22,7 @@
           <span> 手机登陆</span>
         </template>
         <!-- 输入组件 -->
-        <login-phone ref="phoneRef" />
+        <login-phone ref="phoneRef" :isLoading="isLoading" />
       </el-tab-pane>
     </el-tabs>
     <!-- 记住/忘记密码 -->
@@ -35,7 +35,8 @@
       class="el-btn"
       type="primary"
       @click="handelLoginClick"
-      v-loading="isLodaing"
+      v-loading="isLoading"
+      element-loading-text="登陆中..."
       >立即登陆</el-button
     >
   </div>
@@ -52,7 +53,7 @@ const isKeep = ref(true)
 // 记录当前所在的标签页
 const currentTab = ref('account')
 onUpdated(() => console.log(currentTab.value))
-const isLodaing = ref(false)
+const isLoading = ref(false)
 // 拿到 login-account login-phone组件
 const accountRef = ref()
 const phoneRef = ref()
@@ -60,10 +61,14 @@ const phoneRef = ref()
 // 如果当前标签页在"账号登陆",则调用 login-account 中的 loginAction 执行登陆要执行的逻辑,
 // 并将"记住密码"传过去
 const handelLoginClick = () => {
-  isLodaing.value = true
+  isLoading.value = true
   if (currentTab.value === 'account') {
     accountRef.value.loginAction(isKeep.value)
   }
+}
+
+const changeLoading = () => {
+  isLoading.value = false
 }
 </script>
 

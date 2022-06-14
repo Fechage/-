@@ -10,6 +10,7 @@ const app = createApp(App)
 // 注册
 app.use(registerElement)
 app.use(store)
-app.use(router)
 store.dispatch('login/loadLoginStatus')
+app.use(router)
+
 app.mount('#app')
