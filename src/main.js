@@ -12,5 +12,4 @@ app.use(registerElement)
 app.use(store)
 store.dispatch('login/loadLoginStatus')
 app.use(router)
-
 app.mount('#app')

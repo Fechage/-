@@ -8,22 +8,19 @@ const routes = [
   },
   {
     path: '/login',
+    name: 'login',
     component: () => import('@/views/login/login.vue')
   },
   {
     path: '/main',
+    name: 'main',
     component: () => import('@/views/main/main.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    component: () => import('@/views/not-found/notFound.vue')
   }
-
-  // {
-  //   path: '/login',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  // }
 ]
 
 const router = createRouter({
@@ -36,6 +33,12 @@ router.beforeEach((to) => {
     const token = useCache.getCache('token')
     if (!token) {
       return '/login'
+    }
+  }
+
+  if (to.path.indexOf('/main') !== -1) {
+    if (to.path.name === 'notFound') {
+      to.name = '/user'
     }
   }
 })

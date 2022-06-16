@@ -8,7 +8,7 @@
         <el-header class="header">
           <navHeader />
         </el-header>
-        <el-main class="page-content">Main</el-main>
+        <el-main class="page-content"><router-view></router-view></el-main>
       </el-container>
     </el-container>
   </div>

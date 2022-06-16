@@ -1,10 +1,11 @@
+import router from '@/router'
 import {
   accountLoginRequest,
   requestUserInfoById,
   requestUserMenuList
 } from '@/service/login/login'
 import useCache from '@/utils/cache'
-import router from '@/router'
+import { mapMenu2Router } from '@/utils/mapRoutes'
 
 const login = {
   namespaced: true,
@@ -25,6 +26,12 @@ const login = {
     },
     saveUserMenuList(state, userMenuList) {
       state.userMenuList = userMenuList
+
+      // 注册动态路由
+      const routes = mapMenu2Router(userMenuList)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   },
   actions: {

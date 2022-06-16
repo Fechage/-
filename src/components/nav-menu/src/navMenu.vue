@@ -5,7 +5,11 @@
       <span class="title">CMS</span>
     </div>
     <!--  -->
-    <el-menu active-text-color="#3EAF7C" class="el-menu-vertical">
+    <el-menu
+      default-active="2"
+      active-text-color="#3EAF7C"
+      class="el-menu-vertical"
+    >
       <template v-for="item in userMenuList" :key="item.id">
         <!-- 遍历有children的菜单 -->
         <template v-if="item.type === 1">
@@ -16,13 +20,16 @@
             </template>
             <!-- 下拉菜单的具体项目 -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handleMenuItemCLick(subitem)"
+              >
                 <span class="sub-menu-item">{{ subitem.name }}</span>
               </el-menu-item>
             </template>
           </el-sub-menu>
         </template>
-        <!--  -->
+        <!-- 只有具体项目的菜单 -->
         <template v-else-if="item.type === 2">
           <el-menu-item>
             <span>{{ item.name }}</span>
@@ -37,10 +44,16 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const store = useStore()
+const router = useRouter()
 // 从状态中拿到用户菜单列表
 const userMenuList = computed(() => store.state.login.userMenuList)
+
+const handleMenuItemCLick = (subitem) => {
+  router.push(subitem.url)
+}
 </script>
 
 <style lang="less" scoped>
