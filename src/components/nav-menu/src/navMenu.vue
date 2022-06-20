@@ -6,7 +6,7 @@
     </div>
     <!--  -->
     <el-menu
-      default-active="2"
+      :default-active="currentID"
       active-text-color="#3EAF7C"
       class="el-menu-vertical"
     >
@@ -50,9 +50,11 @@ const store = useStore()
 const router = useRouter()
 // 从状态中拿到用户菜单列表
 const userMenuList = computed(() => store.state.login.userMenuList)
-
+// 刷新后拿到当前页面记录ID
+const currentID = sessionStorage.getItem('currentID')
 const handleMenuItemCLick = (subitem) => {
   router.push(subitem.url)
+  sessionStorage.setItem('currentID', subitem.id)
 }
 </script>
 
