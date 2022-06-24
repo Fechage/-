@@ -6,6 +6,7 @@ import {
 } from '@/service/login/login'
 import useCache from '@/utils/cache'
 import { mapMenu2Router } from '@/utils/mapRoutes'
+import { mapMenu2Permissions } from '@/utils/mapPermissions'
 
 const login = {
   namespaced: true,
@@ -13,7 +14,8 @@ const login = {
     return {
       token: '',
       userInfo: {},
-      userMenuList: {}
+      userMenuList: {},
+      permissions: []
     }
   },
   getters: {},
@@ -32,6 +34,9 @@ const login = {
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+
+      // 获取用户的访问权限列表
+      state.permissions = mapMenu2Permissions(userMenuList)
     }
   },
   actions: {

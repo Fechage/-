@@ -23,6 +23,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { rules } from '../config/account-config'
 import useCache from '@/utils/cache'
 
@@ -55,17 +56,18 @@ const loginAction = (isKeep) => {
     store
       .dispatch('login/accountLoginAction', { ...account })
       .then(() => {
-        alert('登陆成功!')
+        ElMessageBox.alert('登陆成功!')
       })
       .catch(() => {
         emit('change-loading')
-        alert('用户名或密码错误,请重新输入~')
+        ElMessageBox.alert('用户名或密码错误,请检查账号或密码')
       })
   })
 }
 
 defineExpose({
-  loginAction
+  loginAction,
+  ElMessage
 })
 </script>
 

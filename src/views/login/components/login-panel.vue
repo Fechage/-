@@ -44,7 +44,7 @@
 
 <script setup>
 import { UserFilled, Iphone } from '@element-plus/icons-vue'
-import { ref, onUpdated } from 'vue'
+import { ref } from 'vue'
 import loginAccount from './login-account.vue'
 import loginPhone from './login-phone.vue'
 
@@ -52,7 +52,6 @@ import loginPhone from './login-phone.vue'
 const isKeep = ref(true)
 // 记录当前所在的标签页
 const currentTab = ref('account')
-onUpdated(() => console.log(currentTab.value))
 const isLoading = ref(false)
 // 拿到 login-account login-phone组件
 const accountRef = ref()

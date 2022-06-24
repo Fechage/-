@@ -2,7 +2,7 @@ export function mapMenu2Router(userMenuList) {
   // 找出所有需要路由的组件
   const routes = []
   const allRoutes = []
-  const routeFiles = require.context('../router/main', true, /.js/)
+  const routeFiles = require.context('../router/main', true, /\.js/)
   routeFiles.keys().forEach((key) => {
     const route = require('../router/main' + key.split('.')[1])
     allRoutes.push(route.default)

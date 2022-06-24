@@ -8,13 +8,18 @@
         <el-header class="header">
           <navHeader />
         </el-header>
-        <el-main class="page-content"><router-view></router-view></el-main>
+        <ElConfigProvider :locale="zhCn">
+          <el-main class="page-content"><router-view></router-view></el-main>
+        </ElConfigProvider>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script setup>
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+
 import navMenu from '@/components/nav-menu/index'
 import navHeader from '@/components/nav-header/index'
 </script>
