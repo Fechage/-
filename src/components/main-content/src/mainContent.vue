@@ -1,7 +1,16 @@
 <template>
   <div class="main-content">
-    <my-table :userList="userList" v-bind="contentConfig">
-      <!-- 插入状态栏的内容 -->
+    <my-table
+      :userList="userList"
+      :totalCount="totalCount"
+      v-model:page="pageInfo"
+      v-bind="contentConfig"
+    >
+      <!-- 插入表头:新建用户 -->
+      <template #headerHandle>
+        <el-button @click="createUser" type="primary">新建用户</el-button>
+      </template>
+      <!-- 插入状态栏的内容:启用/禁用-->
       <template #status="statu">
         <el-button v-if="statu.row.enable" type="success" size="small" disabled>
           {{ '启用' }}
@@ -15,12 +24,12 @@
           {{ '禁用' }}
         </el-button>
       </template>
-      <!-- 插入操作栏的内容 -->
+      <!-- 插入操作栏的内容:编辑/删除-->
       <template #handler>
-        <el-button size="small" text>
+        <el-button @click="editUser" size="small" text>
           <el-icon><Edit /></el-icon>编辑</el-button
         >
-        <el-button type="danger" size="small" text>
+        <el-button @click="deleteUser" type="danger" size="small" text>
           <el-icon><Delete /></el-icon>删除</el-button
         >
       </template>
@@ -31,6 +40,7 @@
       <template #updateAt="updateAt">
         <span>{{ utcFormat(updateAt.row.updateAt) }}</span>
       </template>
+      <!--  -->
     </my-table>
   </div>
 </template>
@@ -39,24 +49,39 @@
 import { Edit, Delete } from '@element-plus/icons-vue'
 import MyTable from '@/base/table/index'
 
+import { ref, computed, watch } from '@vue/runtime-core'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
 import { utcFormat } from '@/utils/timeFormat'
 
 defineProps({ contentConfig: Object })
 const store = useStore()
+// 页脚信息
+const pageInfo = ref({ currentPage: 1, pageSize: 5 })
+watch(pageInfo, () => getData())
 
-// 发送请求表格数据
-store.dispatch('system/getTableDataAction', {
-  pageUrl: '/users/list',
-  queryInfo: {
-    offset: 0,
-    size: 10
-  }
-})
+// 请求首屏展示表格
+const getData = () => {
+  store.dispatch('system/getTableDataAction', {
+    pageName: 'users',
+    queryInfo: {
+      offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+      size: pageInfo.value.pageSize
+    }
+  })
+}
+getData()
+
 // 获取表格数据
 const userList = computed(() => store.state.system.list)
-// const totalCount = computed(() => store.state.system.totalCount)
+// 获取页脚数据
+const totalCount = computed(() => store.state.system.totalCount)
+
+// 新建用户, 编辑, 删除操作
+const createUser = () => {
+  store.dispatch('system/createUserAction')
+}
+const editUser = () => {}
+const deleteUser = () => {}
 </script>
 
 <style lang="less" scoped>

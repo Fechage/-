@@ -1,4 +1,7 @@
-import { getTableDataRequest } from '@/service/main/system/system'
+import {
+  getTableDataRequest
+  // createUserRequest
+} from '@/service/main/system/system'
 export default {
   namespaced: true,
   state: () => {
@@ -16,8 +19,13 @@ export default {
   actions: {
     // 请求并保存表单的数据
     async getTableDataAction({ commit }, payload) {
-      const tableDataList = await getTableDataRequest(payload)
+      const pageUrl = `/${payload.pageName}/list`
+      const tableDataList = await getTableDataRequest(
+        pageUrl,
+        payload.queryInfo
+      )
       commit('saveTableDataList', tableDataList.data)
-    }
+    },
+    async createUserAction() {}
   }
 }

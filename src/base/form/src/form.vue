@@ -1,5 +1,5 @@
 <template>
-  <div class="serach-form">
+  <div class="form">
     <slot name="header"></slot>
     <el-form :label-width="labelWidth">
       <el-row>
@@ -79,8 +79,9 @@ watch(
 )
 </script>
 
-<style lang="less">
-.serach-form {
-  background-color: #e7ecf3;
+<style lang="less" scoped>
+.form {
+  padding: 10px;
+  // background-color: #e7ecf3;
 }
 </style>

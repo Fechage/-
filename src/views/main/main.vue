@@ -31,15 +31,14 @@ import navHeader from '@/components/nav-header/index'
   height: 100%;
   top: 0;
   left: 0;
-}
-
-.main-content,
-.page {
-  height: 100%;
-}
-.page-content {
-  height: calc(100% - 48px);
-  border-left: 1px solid #eaecef;
-  border-top: 1px solid #eaecef;
+  .main-content,
+  .page {
+    height: 100%;
+  }
+  .page-content {
+    height: calc(100% - 48px);
+    border-left: 1px solid #eaecef;
+    border-top: 1px solid #eaecef;
+  }
 }
 </style>

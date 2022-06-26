@@ -2,7 +2,8 @@
   <div class="table">
     <div class="header">
       <h2>{{ title }}</h2>
-      <el-button type="primary">新建用户</el-button>
+      <!-- 新建用户 -->
+      <slot name="headerHandle"></slot>
     </div>
     <el-table
       :data="userList"
@@ -45,22 +46,37 @@
     <!-- 分页 -->
     <div class="pagination">
       <el-pagination
-        :page-sizes="[100, 200, 300, 400]"
+        v-model:current-page="page.currentPage"
+        v-model:page-size="page.pageSize"
+        :page-sizes="[10, 20, 30]"
+        :total="totalCount"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        hide-on-single-page
       />
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   title: String,
   userList: Array,
   propList: Object,
+  totalCount: Number,
+  page: Object,
   showIndex: { type: Boolean, default: false },
   showSelect: { type: Boolean, default: false }
 })
+const emits = defineEmits(['update:page'])
+const handleCurrentChange = (current) => {
+  console.log(current)
+  emits('update:page', { ...props.page, currentPage: current })
+}
+const handleSizeChange = (pageSize) => {
+  emits('update:page', { ...props.page, pageSize })
+}
 </script>
 
 <style lang="less">

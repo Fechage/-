@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 function requestInterceptor(config) {
   const token = cache.getCache('token')
   if (token) {
-    config.headers['Authorization'] = token
+    config.headers.Authorization = `Bearer ${token}`
   }
   return config
 }

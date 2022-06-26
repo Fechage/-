@@ -1,8 +1,14 @@
 import zgRequest from '../../request'
 
-export function getTableDataRequest(config) {
+export function getTableDataRequest(pageUrl, queryInfo) {
   return zgRequest.post({
-    url: config.pageUrl,
-    data: config.queryInfo
+    url: pageUrl,
+    data: queryInfo
+  })
+}
+export function createUserRequest(pageUrl, userInfo) {
+  return zgRequest.post({
+    url: pageUrl,
+    data: userInfo
   })
 }
