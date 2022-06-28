@@ -17,9 +17,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { useStore } from 'vuex'
-import { usePermission } from '@/hooks/usePermission'
+import { usePermission, useFormData } from '@/hooks/index'
 
 import searchForm from '@/base/form/src/form.vue'
 
@@ -30,16 +29,8 @@ const props = defineProps({
   }
 })
 const store = useStore()
-
-// 1.根据传入的配置searchConfig来确定需要绑定的数据
-// 1.1.拿到配置的表格配置
-const formItems = props.searchConfig?.formItems ?? []
-// 1.2.动态创建绑定数据
-const originFormData = {}
-for (const item of formItems) {
-  originFormData[item.field] = ''
-}
-const formData = ref(originFormData)
+//  1.动态创建表单项
+const formData = useFormData(props.searchConfig)
 
 // 2.重置功能
 const handleReset = () => {

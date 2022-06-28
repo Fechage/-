@@ -1,31 +1,82 @@
-import {
-  getTableDataRequest
-  // createUserRequest
-} from '@/service/main/system/system'
+import { systemRequest } from '@/service/main/system/system'
+
 export default {
   namespaced: true,
   state: () => {
     return {
-      list: [],
-      totalCount: 0
+      userList: [],
+      userCount: 0,
+      roleList: [],
+      departmentList: []
     }
   },
   mutations: {
+    // 保存用户表格数据
     saveTableDataList: (state, data) => {
-      state.list = data.list
-      state.totalCount = data.totalCount
+      state.userList = data.list
+      state.userCount = data.totalCount
+    },
+    saveRoleList: (state, data) => {
+      state.roleList = data.list
+    },
+    saveDepartmentList: (state, data) => {
+      state.departmentList = data.list
     }
   },
   actions: {
-    // 请求并保存表单的数据
+    // 请求用户表格数据
     async getTableDataAction({ commit }, payload) {
       const pageUrl = `/${payload.pageName}/list`
-      const tableDataList = await getTableDataRequest(
+      const tableDataList = await systemRequest(
         pageUrl,
-        payload.queryInfo
+        payload.queryInfo,
+        'post'
       )
       commit('saveTableDataList', tableDataList.data)
     },
-    async createUserAction() {}
+    // 请求列表数据
+    async getSystemListAction({ commit }, payload) {
+      const { pageName, data } = payload
+      const pageUrl = `/${pageName}/list`
+      const list = await systemRequest(pageUrl, data, 'post')
+      const listName = pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+      commit(`save${listName}ListAndCount`, list)
+    },
+    // 请求部门和角色列表
+    async getRoleAndDepartmentListAction({ commit }) {
+      const roleList = await systemRequest(
+        '/role/list',
+        { offset: 0, size: 100 },
+        'post'
+      )
+      const departmentList = await systemRequest(
+        '/department/list',
+        { offset: 0, size: 100 },
+        'post'
+      )
+      commit('saveRoleList', roleList.data)
+      commit('saveDepartmentList', departmentList.data)
+    },
+
+    // 新建用户请求
+    async newUserAction({ dispatch }, payload) {
+      const pageUrl = `/${payload.pageName}`
+      await systemRequest(pageUrl, payload.data, 'post')
+      // 获取新建后的表格数据
+      dispatch('getTableDataAction', {
+        pageName: payload.pageName,
+        queryInfo: { offset: 0, size: 5 }
+      })
+    },
+    //编辑用户信息请求
+    async editUserAction({ dispatch }, payload) {
+      const pageUrl = `/${payload.pageName}/${payload.id}`
+      await systemRequest(pageUrl, payload.data, 'patch')
+      // 获取新建后的表格数据
+      dispatch('getTableDataAction', {
+        pageName: payload.pageName,
+        queryInfo: { offset: 0, size: 5 }
+      })
+    }
   }
 }

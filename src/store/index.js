@@ -4,9 +4,7 @@ import system from './main/system/system'
 
 const store = createStore({
   state: () => {
-    return {
-      name: 'lzg'
-    }
+    return {}
   },
   getters: {},
   mutations: {},

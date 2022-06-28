@@ -2,13 +2,15 @@
   <div class="main-content">
     <my-table
       :userList="userList"
-      :totalCount="totalCount"
+      :userCount="userCount"
       v-model:page="pageInfo"
       v-bind="contentConfig"
     >
       <!-- 插入表头:新建用户 -->
       <template #headerHandle>
-        <el-button @click="createUser" type="primary">新建用户</el-button>
+        <el-button @click="handleNewAndEditUser" type="primary"
+          >新建用户</el-button
+        >
       </template>
       <!-- 插入状态栏的内容:启用/禁用-->
       <template #status="statu">
@@ -25,11 +27,11 @@
         </el-button>
       </template>
       <!-- 插入操作栏的内容:编辑/删除-->
-      <template #handler>
-        <el-button @click="editUser" size="small" text>
+      <template #handler="edit">
+        <el-button @click="handleNewAndEditUser(edit.row)" size="small" text>
           <el-icon><Edit /></el-icon>编辑</el-button
         >
-        <el-button @click="deleteUser" type="danger" size="small" text>
+        <el-button @click="handleDeleteUser" type="danger" size="small" text>
           <el-icon><Delete /></el-icon>删除</el-button
         >
       </template>
@@ -46,16 +48,17 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from '@vue/runtime-core'
+import { useStore } from 'vuex'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import MyTable from '@/base/table/index'
 
-import { ref, computed, watch } from '@vue/runtime-core'
-import { useStore } from 'vuex'
 import { utcFormat } from '@/utils/timeFormat'
 
 defineProps({ contentConfig: Object })
+const emits = defineEmits(['handleNewAndEditUser'])
 const store = useStore()
-// 页脚信息
+// 分页信息
 const pageInfo = ref({ currentPage: 1, pageSize: 5 })
 watch(pageInfo, () => getData())
 
@@ -72,16 +75,16 @@ const getData = () => {
 getData()
 
 // 获取表格数据
-const userList = computed(() => store.state.system.list)
+const userList = computed(() => store.state.system.userList)
 // 获取页脚数据
-const totalCount = computed(() => store.state.system.totalCount)
+const userCount = computed(() => store.state.system.userCount)
 
 // 新建用户, 编辑, 删除操作
-const createUser = () => {
-  store.dispatch('system/createUserAction')
+const handleNewAndEditUser = (info) => {
+  emits('handleNewAndEditUser', info)
 }
-const editUser = () => {}
-const deleteUser = () => {}
+
+const handleDeleteUser = () => {}
 </script>
 
 <style lang="less" scoped>

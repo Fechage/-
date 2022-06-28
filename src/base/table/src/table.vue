@@ -49,7 +49,7 @@
         v-model:current-page="page.currentPage"
         v-model:page-size="page.pageSize"
         :page-sizes="[10, 20, 30]"
-        :total="totalCount"
+        :total="userCount"
         layout="total, sizes, prev, pager, next, jumper"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
@@ -64,7 +64,7 @@ const props = defineProps({
   title: String,
   userList: Array,
   propList: Object,
-  totalCount: Number,
+  userCount: Number,
   page: Object,
   showIndex: { type: Boolean, default: false },
   showSelect: { type: Boolean, default: false }
