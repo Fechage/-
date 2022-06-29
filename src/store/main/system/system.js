@@ -24,7 +24,7 @@ export default {
     }
   },
   actions: {
-    // 请求用户表格数据
+    // 用户表格数据请求
     async getTableDataAction({ commit }, payload) {
       const pageUrl = `/${payload.pageName}/list`
       const tableDataList = await systemRequest(
@@ -34,7 +34,7 @@ export default {
       )
       commit('saveTableDataList', tableDataList.data)
     },
-    // 请求列表数据
+    // 列表数据请求
     async getSystemListAction({ commit }, payload) {
       const { pageName, data } = payload
       const pageUrl = `/${pageName}/list`
@@ -42,7 +42,7 @@ export default {
       const listName = pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
       commit(`save${listName}ListAndCount`, list)
     },
-    // 请求部门和角色列表
+    // 部门和角色列表请求
     async getRoleAndDepartmentListAction({ commit }) {
       const roleList = await systemRequest(
         '/role/list',
@@ -57,7 +57,6 @@ export default {
       commit('saveRoleList', roleList.data)
       commit('saveDepartmentList', departmentList.data)
     },
-
     // 新建用户请求
     async newUserAction({ dispatch }, payload) {
       const pageUrl = `/${payload.pageName}`
@@ -68,10 +67,20 @@ export default {
         queryInfo: { offset: 0, size: 5 }
       })
     },
-    //编辑用户信息请求
+    // 编辑用户请求
     async editUserAction({ dispatch }, payload) {
       const pageUrl = `/${payload.pageName}/${payload.id}`
       await systemRequest(pageUrl, payload.data, 'patch')
+      // 获取新建后的表格数据
+      dispatch('getTableDataAction', {
+        pageName: payload.pageName,
+        queryInfo: { offset: 0, size: 5 }
+      })
+    },
+    // 删除用户请求
+    async deleteUserAction({ dispatch }, payload) {
+      const pageUrl = `/${payload.pageName}/${payload.id}`
+      await systemRequest(pageUrl, null, 'delete')
       // 获取新建后的表格数据
       dispatch('getTableDataAction', {
         pageName: payload.pageName,

@@ -27,11 +27,16 @@
         </el-button>
       </template>
       <!-- 插入操作栏的内容:编辑/删除-->
-      <template #handler="edit">
-        <el-button @click="handleNewAndEditUser(edit.row)" size="small" text>
+      <template #handler="scpoe">
+        <el-button @click="handleNewAndEditUser(scpoe.row)" size="small" text>
           <el-icon><Edit /></el-icon>编辑</el-button
         >
-        <el-button @click="handleDeleteUser" type="danger" size="small" text>
+        <el-button
+          @click="handleDeleteUser(scpoe.row)"
+          type="danger"
+          size="small"
+          text
+        >
           <el-icon><Delete /></el-icon>删除</el-button
         >
       </template>
@@ -50,6 +55,7 @@
 <script setup>
 import { ref, computed, watch } from '@vue/runtime-core'
 import { useStore } from 'vuex'
+import { ElMessageBox } from 'element-plus'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import MyTable from '@/base/table/index'
 
@@ -84,7 +90,14 @@ const handleNewAndEditUser = (info) => {
   emits('handleNewAndEditUser', info)
 }
 
-const handleDeleteUser = () => {}
+const handleDeleteUser = (deleteUser) => {
+  ElMessageBox.confirm('用户删除后将无法恢复').then(() => {
+    store.dispatch('system/deleteUserAction', {
+      pageName: 'users',
+      id: deleteUser.id
+    })
+  })
+}
 </script>
 
 <style lang="less" scoped>

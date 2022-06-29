@@ -29,7 +29,7 @@ const props = defineProps({
   editInfo: Object
 })
 const store = useStore()
-const titleToggle = ref('新建用户')
+const titleToggle = ref('')
 // 1.动态创建并绑定表单项
 const formData = useFormData(props.modalConfig)
 watch(
@@ -38,24 +38,26 @@ watch(
     for (const item of props.modalConfig.formItems) {
       formData.value[`${item.field}`] = newV[`${item.field}`]
     }
-    console.log(newV)
   }
 )
-// 2.Dialog 的确认/取消按钮
+
+// 2 Dialog 的确认/取消操作
 const isShowDialog = ref(false)
-// 2.1取消按钮
+// 2.1 取消操作
 const handleDialogClose = () => {
   isShowDialog.value = false
 }
-// 2.2确认按钮
+// 2.2 确认操作
 const handleDialogConfirm = () => {
-  if (props.editInfo) {
+  //  2.2.1 editInfo 不为空,则执行编辑操作
+  if (Object.keys(props.editInfo).length !== 0) {
     store.dispatch('system/editUserAction', {
       pageName: props.modalConfig.pageName,
       data: { ...formData.value },
       id: props.editInfo.id
     })
   } else {
+    //  2.2.2 editInfo 为空,则执行新建操作
     store.dispatch('system/newUserAction', {
       pageName: props.modalConfig.pageName,
       data: { ...formData.value }
