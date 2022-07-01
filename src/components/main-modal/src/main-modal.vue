@@ -10,9 +10,7 @@
       <dialog-form v-bind="modalConfig" v-model="formData"></dialog-form>
       <template #footer>
         <el-button @click="handleDialogClose" plain>取消</el-button>
-        <el-button @click="handleDialogConfirm" type="primary" plain
-          >确认</el-button
-        >
+        <el-button @click="handleDialogConfirm" type="primary">确认</el-button>
       </template>
     </el-dialog>
   </div>

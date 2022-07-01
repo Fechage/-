@@ -11,6 +11,7 @@
                 v-if="item.type === 'input' || item.type === 'password'"
               >
                 <el-input
+                  class="my-input"
                   :placeholder="item.placeholder"
                   v-model="formData[`${item.field}`]"
                 />
@@ -82,6 +83,5 @@ watch(
 <style lang="less" scoped>
 .form {
   padding: 10px;
-  // background-color: #e7ecf3;
 }
 </style>
